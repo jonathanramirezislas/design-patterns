@@ -29,6 +29,10 @@ function printUser(id) {
 
   /*
     This will throw an error if we don't first check that the user object has this function available and isn't null.
+    
+    Other way 
+    user?.hasAccess?.hasAccess()
+    
     */
   if (user != null && user.hasAccess != null && user.hasAccess()) {
     console.log('You have access')
