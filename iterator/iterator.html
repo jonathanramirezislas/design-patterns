@@ -1,0 +1,68 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset='utf-8'>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <title>Page Title</title>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+</head>
+<body>
+    
+</body>
+
+<script>
+const url = "https://jsonplaceholder.typicode.com/todos/";
+
+
+class Iterator{
+
+    constructor(elements){
+        this.elements = elements;
+        this.index = 0;
+    }
+
+    hasNext(){
+        return this.index < this.elements.length;}
+    next(){
+        return this.elements[this.index++];
+    }
+    reset(){
+        this.index = 0;
+    }
+}
+
+// fill up elements
+let elements = [];
+for(let id = 1; id<= 5; id++){
+    elements.push(async () =>{
+        let response = await fetch(url+id);
+        let data = await response.json();
+        return data;
+    });
+}
+
+// firs loop
+let iterator = new Iterator(elements);
+
+while(iterator.hasNext()){
+    let element = iterator.next();
+    let data = element().then(result =>{
+        console.log(result);
+    })
+}
+
+
+//reset index
+iterator.reset();
+//loop again
+while(iterator.hasNext()){
+    let element = iterator.next();
+    let data = element().then(result =>{
+        console.log(result);
+    })
+}
+
+</script>
+
+</html>
