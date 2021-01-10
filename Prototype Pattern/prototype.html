@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset='utf-8'>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <title>Page Title</title>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+
+</head>
+<body>
+    
+</body>
+<script>
+
+class ConnectionPrototype {
+    constructor(proto){ //this proto is a instance from connection but with already values
+        this.proto = proto;
+        return this.clone();//call the function
+    }
+
+    clone(){ 
+        let connection = new Connection();// new instance (empty) from conection but with status:0  
+        connection.driver = this.proto.driver;
+        connection.server= this.proto.server;
+        connection.database = this.proto.database;
+        connection.user = this.proto.user;
+        connection.password = this.proto.password;
+        return connection;
+    }
+}
+
+class Connection{
+    constructor(driver, server, database, user, password){
+        this.driver = driver;
+        this.server = server;
+        this.database = database;
+        this.user = user;
+        this.password = password;
+        this.status = 0;
+    }
+
+    getConnection(){
+        this.status = 1;
+        return this.driver + "://server=" +this.server+ ";database=" +this.database +";user="+this.user+ ";password="+this.password;
+    }
+
+    close(){
+        this.status = 0;
+    }
+
+}
+
+//this is my prototype from SQL Sever 
+let connectionSQLServerPrototype = 
+    new Connection("sqlserver","localhost","beerDB","sa","123456");
+
+console.log('Conection Prototype',connectionSQLServerPrototype);
+
+//I can create as many connections as I please,to change only some properties in some or all of them 
+let connectionSQLServer = 
+    new ConnectionPrototype(connectionSQLServerPrototype);
+
+// we change a property from connection but prototype is still the same 
+connectionSQLServer.user='Admin2';
+
+//we simulate a connection 
+connectionSQLServer.getConnection();
+
+console.log('Copy of prototype after to change som properties',connectionSQLServer);
+
+//connectionSQLServer.close()//we simulate a close connection
+
+
+//this is my prototype fow SQL Mysql 
+let connectionMysqlPrototype = 
+    new Connection("mysql","localhost","beerDB","sa","123456");
+
+let connectionMysql =
+    new ConnectionPrototype(connectionMysqlPrototype);
+
+
+
+
+
+
+</script>
+</html>
